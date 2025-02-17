@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "node-modules/exp/index.ts",
   "scripts": {
-    "start": "nodemon index.ts",
+    "start": "nodemon index.ts"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
