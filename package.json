@@ -1,0 +1,27 @@
+{
+  "name": "apimongo",
+  "version": "1.0.0",
+  "main": "node-modules/exp/index.ts",
+  "scripts": {
+    "start": "nodemon index.ts",
+  },
+  "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.8",
+    "@types/mongoose": "^5.11.96",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.0",
+    "nodemon": "^3.1.9",
+    "path": "^0.12.7",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "typescript": "^5.3.3"
+  },
+  "private": true
+}

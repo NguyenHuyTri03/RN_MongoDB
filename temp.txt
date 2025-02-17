@@ -1,0 +1,16 @@
+User:
+- id: ObjectId
+- uid: string
+- name: string
+
+Transactions:
+- id: ObjectId
+- uid: string
+- amount: float
+- description: string
+- date: Datetime
+- category: Categories
+
+Categories:
+- id: ObjectId
+- name: string
