@@ -1,12 +1,14 @@
 import { Request, Response } from "express"
-import { uidGen, User } from "../../models/Users"
+import { Transactions } from "../../models/Transactions"
 import mongoose from "mongoose"
 
-// get all users
+// get all transactions for one user
 export const getAll = async (req: Request, res: Response) => {
-    console.log('Getting Users')
+    const uid = req.params.uid
+    const query = { uid: uid }
+
     try {
-        User.find({})
+        Transactions.find(query)
             .then(data => {
                 res.status(200).json(data)
             })
@@ -20,7 +22,7 @@ export const getOne = async (req: Request, res: Response) => {
     const id = req.params.id
 
     try {
-        User.findById(id)
+        Transactions.findById(id)
             .then(data => {
                 res.status(200).send(data)
             })
@@ -34,7 +36,7 @@ export const deleteOne = async (req: Request, res: Response) => {
     const id = req.params.id
 
     try {
-        User.findByIdAndDelete(id)
+        Transactions.findByIdAndDelete(id)
             .then(() => {
                 res.status(200).json({
                     message: 'ok'
@@ -45,19 +47,25 @@ export const deleteOne = async (req: Request, res: Response) => {
     }
 }
 
-// Create a user
+// Create a transaction
 export const createOne = async (req: Request, res: Response) => {
-    const user = req.body
+    const transaction = req.body
     const newId = new mongoose.Types.ObjectId()
-    const newUid = uidGen()
+
+    if (transaction.category === '') {
+        transaction.category = 'Miscellaneous'
+    }
 
     try {
-        const newUSer = new User({
-            name: user.name,
-            uid: newUid,
-            _id: newId
+        const newTransaction = new Transactions({
+            _id: newId,
+            uid: transaction.uid,
+            amount: transaction.amount,
+            description: transaction.description,
+            date: transaction.date,
+            category: transaction.category
         })
-        await newUSer.save()
+        await newTransaction.save()
         res.status(200).json({
             message: 'ok'
         })
@@ -68,15 +76,16 @@ export const createOne = async (req: Request, res: Response) => {
 
 // Update a user
 export const updateOne = async (req: Request, res: Response) => {
-    const id = new mongoose.Types.ObjectId(req.params.id)
     const newData = req.body
 
     try {
-        const query = { _id: id }
-        const user = await User.findById(id)
-        user!.name = newData.name
+        const transaction = await Transactions.findById(newData._id)
+        transaction!.amount = newData.amount
+        transaction!.description = newData.description
+        transaction!.date = newData.date
+        transaction!.category = newData.category
 
-        user?.save()
+        transaction?.save()
 
         res.status(200).json({
             message: 'ok'
