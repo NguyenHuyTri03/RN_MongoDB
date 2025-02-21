@@ -30,3 +30,22 @@ export const getOne = async (req: Request, res: Response) => {
         res.status(500).json(err)
     }
 }
+
+// Update a category
+export const updateOne = async (req: Request, res: Response) => {
+    const newData = req.body
+
+    try {
+        const category = await Categories.findById(newData._id)
+        category!.name = newData.name
+
+        category?.save()
+
+        res.status(200).json({
+            message: 'ok'
+        })
+
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}

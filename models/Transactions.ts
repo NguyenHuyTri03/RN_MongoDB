@@ -6,7 +6,7 @@ export interface ITransactions {
     amount: number,
     description: string,
     date: string,
-    category: string
+    category_id: string
 }
 
 const transactionsSchema = new Schema<ITransactions>({
@@ -15,7 +15,7 @@ const transactionsSchema = new Schema<ITransactions>({
     amount: { type: Number, required: true },
     description: { type: String },
     date: { type: String, required: true },
-    category: { type: String }
+    category_id: { type: String }
 })
 
 export const Transactions = mongoose.model<ITransactions>('transactions', transactionsSchema)

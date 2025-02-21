@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { Transactions } from "../../models/Transactions"
 import mongoose from "mongoose"
+import { Categories } from "../../models/Categories"
 
 // get all transactions for one user
 export const getAll = async (req: Request, res: Response) => {
@@ -74,7 +75,7 @@ export const createOne = async (req: Request, res: Response) => {
     }
 }
 
-// Update a user
+// Update a transaction
 export const updateOne = async (req: Request, res: Response) => {
     const newData = req.body
 
@@ -83,7 +84,7 @@ export const updateOne = async (req: Request, res: Response) => {
         transaction!.amount = newData.amount
         transaction!.description = newData.description
         transaction!.date = newData.date
-        transaction!.category = newData.category
+        transaction!.category_id = newData.category_id
 
         transaction?.save()
 
@@ -93,5 +94,43 @@ export const updateOne = async (req: Request, res: Response) => {
 
     } catch (err) {
         res.status(500).json(err)
+    }
+}
+
+export const filter = async (req: Request, res: Response) => {
+    const filter_res = req.body
+    const filter = filter_res.feature
+    const filter_data = filter_res.data
+    const query = { [filter]: filter_data }
+
+    try {
+        Transactions.find(query)
+            .then(data => {
+                res.status(200).json(data)
+            })
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
+
+export const updateCategories = async () => {
+    try {
+        const categories = await Categories.find({})
+            .then((data) => {
+                return data
+            })
+
+        Transactions.find({})
+            .then((data) => {
+                data.forEach((transaction) => {
+                    console.log(transaction.category_id)
+                    const cat_id = categories.find((category) => { return category.name === transaction.category_id })!._id.toString()
+                    transaction.category_id = cat_id
+                    transaction.save()
+                })
+            })
+
+    } catch (err) {
+        console.log(err)
     }
 }
