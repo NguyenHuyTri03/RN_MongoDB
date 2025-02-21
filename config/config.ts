@@ -1,11 +1,11 @@
-const MONGO_URL = 'mongodb+srv://viper:26030104@testcluster.eeq2u.mongodb.net/Transactions'
-const SERVER_PORT = 8084
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 export const config = {
     mongo: {
-        url: MONGO_URL
+        url: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@testcluster.eeq2u.mongodb.net/${process.env.DB_NAME}`
     },
     server: {
-        port: SERVER_PORT
+        port: process.env.SERVER_PORT
     }
 }
